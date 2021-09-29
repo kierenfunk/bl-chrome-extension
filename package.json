@@ -1,0 +1,26 @@
+{
+  "name": "bl-chrome-extension",
+  "version": "1.0.0",
+  "description": "Broker Labz chrome extension",
+  "scripts": {
+    "build": "webpack --config webpack.js",
+    "dev-export": "npm run build && rm -rf /mnt/c/Users/KierenFunk/bl-chrome-extension && mv dist /mnt/c/Users/KierenFunk/bl-chrome-extension",
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kierenfunk/bl-chrome-extension.git"
+  },
+  "author": "Kieren Funk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kierenfunk/bl-chrome-extension/issues"
+  },
+  "homepage": "https://github.com/kierenfunk/bl-chrome-extension#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^9.0.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.4.3",
+    "webpack-cli": "^4.8.0"
+  }
+}

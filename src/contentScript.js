@@ -3,7 +3,7 @@ var script = document.createElement('script');
 script.src = chrome.runtime.getURL('inject.js');
 (document.head||document.documentElement).appendChild(script);
 
-const getCommissionData = async (data,event) => {
+const getCommissionData = async (data, event) => {
     // get data
     const originalText = event.target.textContent
     event.target.textContent = 'extracting data...'
