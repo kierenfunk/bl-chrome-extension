@@ -1,34 +1,43 @@
+import commissionReport from './core/commissionReport';
+
 // inject script into page
 var script = document.createElement('script'); 
-script.src = chrome.runtime.getURL('inject.js');
+script.src = chrome.runtime.getURL('js/inject.js');
 (document.head||document.documentElement).appendChild(script);
+
+const getData = async (token, partnerId) => {
+    const response = await fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rcti?search=true&currentPartnerId=${partnerId}&searchParams=%7B%22type%22%3A%22wholesale%22%7D`)
+    const responseJson = await response.json()
+    const initData = responseJson.results.filter((x)=>{
+        return x.status === 'Final'
+    })
+    const finalResponse = await Promise.all(initData.map(async (x)=>{
+        return fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rctiline?search=true&actionType=getByRcti&rctiId=${x.uniqueId}&page=1&start=0&limit=100`).then(r=>r.json()).then(r=>{return {...r,...x}}).catch(err=>console.error(err))
+    }))
+}
 
 const getCommissionData = async (data, event) => {
     // get data
     const originalText = event.target.textContent
-    event.target.textContent = 'extracting data...'
+    event.target.textContent = 'generating report...'
     event.target.setAttribute('disabled', true)
-    token = data.token
-    partnerId = data.partnerId
-    
-    event.target.textContent = 'creating report...'
+    const { token, partnerId, lastPeriod } = data
+
     try{
-        const report = await fetch('https://heqow10921.execute-api.us-east-1.amazonaws.com/dev/',{
-            method : "POST",
-            body: JSON.stringify({token: token, partnerId: partnerId})
-        })
+        const fetchedData = await getData(token, partnerId)
+        const report = commissionReport(fetchedData, lastPeriod)
 
         const date = new Date();
         const month = date.toLocaleString('default', { month: 'long' });
         const year = date.getFullYear()
 
-        const href = window.URL.createObjectURL(await report.blob());
+        const testBlob = new Blob([report],{type: 'text/html'})
         const a = document.createElement('a');
-        a.href = href
+        a.href = window.URL.createObjectURL(testBlob);
         a.download = `Commission-Report-${month}-${year}.html`;
         a.setAttribute('target', '_blank');
         a.click();
-        window.URL.revokeObjectURL(href);
+        window.URL.revokeObjectURL(a.href);
         a.remove();
     }
     catch(err) {
@@ -42,18 +51,27 @@ const getCommissionData = async (data, event) => {
 // Content script
 window.addEventListener("BrokerLabzMessage", function(data) {
     var observer = new MutationObserver(function (m) {
-        if(m[0] && !document.querySelector('#bl-commission-report') && m[0].target.querySelector("button[name='bulkDownload']")){
-            const previousButton = m[0].target.querySelector("button[name='bulkDownload']")
-            const newButton = previousButton.cloneNode(true);
-            newButton.id = 'bl-commission-report'
-            newButton.textContent = "Commission Tracking Report"
-            removeAttributes = ['data-testid','name', 'label','disabled']
-            for(let i = 0; i < removeAttributes.length; i++)
-                newButton.removeAttribute(removeAttributes[i]);
-            newButton.addEventListener('click', getCommissionData.bind(null,data.detail), false)
-            newButton.style.backgroundColor = 'red'
-            newButton.style.borderColor = 'red'
-            previousButton.parentNode.insertBefore(newButton, previousButton.nextSibling);
+        if(m[0] && !document.querySelector('#bl-commission-report') && m[0].target.querySelector("button[name='bulkDownloadCSV']")){
+            const parent = m[0].target.querySelector("button[name='bulkDownloadCSV']").parentNode
+            const buttonGroup = document.createElement("div");
+            buttonGroup.id = 'bl-commission-report'
+
+            const firstButton = document.createElement("button");
+            firstButton.classList.add("btn");
+            firstButton.classList.add("btn-primary");
+            firstButton.classList.add("btn-sm");
+            firstButton.style.margin = "2px 10px 6px 5px"
+            firstButton.style.backgroundColor = 'red'
+            firstButton.style.borderColor = 'red'
+            const secondButton = firstButton.cloneNode()
+            firstButton.textContent = "Commission Tracking Report - Full"
+            secondButton.textContent = "Commission Tracking Report - Last Period"
+            firstButton.addEventListener('click', getCommissionData.bind(null, {...data.detail, lastPeriod: false}), false)
+            secondButton.addEventListener('click', getCommissionData.bind(null, {...data.detail, lastPeriod: true}), false)
+
+            buttonGroup.appendChild(firstButton)
+            buttonGroup.appendChild(secondButton)
+            parent.appendChild(buttonGroup)
         }
     });
     observer.observe(document.body, {childList: true});

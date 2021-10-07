@@ -18,18 +18,14 @@
     "128": "/images/icon128.png"
   },
   "content_scripts": [{
-    "js": ["js/contentScript.js"],
-    "matches": ["*://commissions.connective.com.au/*"],
+    "js": ["/js/contentScript.js"],
+    "matches": [ "*://commissions.connective.com.au/*" ],
     "run_at": "document_idle"
   }],
   "web_accessible_resources": [
     {
-      "resources": [ "js/inject.js" ],
+      "resources": [ "/js/inject.js" ],
       "matches": [ "*://commissions.connective.com.au/*" ]
     }
-  ],
-  "permissions": [
-    "activeTab",
-    "declarativeContent"
-   ]
+  ]
 }
