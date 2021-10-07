@@ -22,7 +22,12 @@ const findErrors = (data: CommissionItem[], globalData: GlobalData): string[] =>
 
   const errors: string[] = [];
   // check if trail commission has dropped off unexpectedly
-  if (dates.length > 0 && Math.max(...dates) !== latestDate && discharged.length < 1 && amountSum > 0) {
+  if (
+    dates.length > 0
+    && Math.max(...dates) !== latestDate
+    && discharged.length < 1
+    && amountSum > 0
+  ) {
     /*
         Conditions:
             1. last trail entry is not the latest period

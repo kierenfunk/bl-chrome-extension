@@ -11,7 +11,11 @@ const getHierarchyKey = (row: CommissionItem, level: string): string => {
   return row.loanAmount.toString();
 };
 
-const dictify = (data: CommissionItem[], indexList: string[], globalData: GlobalData): DictifiedComms | CommissionItemWrap => {
+const dictify = (
+  data: CommissionItem[],
+  indexList: string[],
+  globalData: GlobalData,
+): DictifiedComms | CommissionItemWrap => {
   if (indexList.length <= 0) {
     // sort by endDate
     const returnValue: CommissionItemWrap = {
@@ -30,7 +34,13 @@ const dictify = (data: CommissionItem[], indexList: string[], globalData: Global
     }
     result.set(key, [...result.get(key), row]);
   });
-  return Array.from(result.entries()).reduce((obj, [key, commItems]) => ({ ...obj, [key]: dictify(commItems, indexList.slice(1), globalData) }), {});
+  return Array.from(result.entries()).reduce(
+    (obj, [key, commItems]) => (
+      {
+        ...obj,
+        [key]: dictify(commItems, indexList.slice(1), globalData),
+      }), {},
+  );
 };
 
 export default dictify;

@@ -98,7 +98,10 @@ const builder = (header: [string, string][], data: any, height = 0) => {
   return { output, hasError };
 };
 
-const getCommissionItemValues = (data: CommissionItemWrap, key: string) : string[] | boolean | CommissionItem[] => {
+const getCommissionItemValues = (
+  data: CommissionItemWrap,
+  key: string,
+) : string[] | boolean | CommissionItem[] => {
   if (key === 'errors') return data.errors;
   if (key === 'discontinued') return data.discontinued;
   return data.data;
@@ -106,10 +109,18 @@ const getCommissionItemValues = (data: CommissionItemWrap, key: string) : string
 
 const descend = (dataMap: any, retrieveKey: string, height: number = 2): any => {
   if (height < 1) return [getCommissionItemValues(dataMap, retrieveKey)];
-  return Object.values(dataMap).reduce((arr: any, value) => [...arr, ...descend(value, retrieveKey, height - 1)], []);
+  return Object.values(dataMap).reduce(
+    (arr: any, value) => [...arr, ...descend(value, retrieveKey, height - 1)],
+    [],
+  );
 };
 
-const split = (dataMap: DictifiedComms, retrieve: string, reducer: Function, reducerInit: boolean = true): [DictifiedComms, DictifiedComms] => [
+const split = (
+  dataMap: DictifiedComms,
+  retrieve: string,
+  reducer: Function,
+  reducerInit: boolean = true,
+): [DictifiedComms, DictifiedComms] => [
   Object.entries(dataMap).reduce((res, [key, entry]) => {
     if (!descend(entry, retrieve).reduce(reducer, reducerInit)) return { ...res, [key]: entry };
     return res;

@@ -9,7 +9,7 @@ const getData = async (token, partnerId) => {
   const response = await fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rcti?search=true&currentPartnerId=${partnerId}&searchParams=%7B%22type%22%3A%22wholesale%22%7D`);
   const responseJson = await response.json();
   const initData = responseJson.results.filter((x) => x.status === 'Final');
-  const finalResponse = await Promise.all(initData.map(async (x) => fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rctiline?search=true&actionType=getByRcti&rctiId=${x.uniqueId}&page=1&start=0&limit=100`).then((r) => r.json()).then((r) => ({ ...r, ...x })).catch((err) => console.error(err))));
+  return Promise.all(initData.map(async (x) => fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rctiline?search=true&actionType=getByRcti&rctiId=${x.uniqueId}&page=1&start=0&limit=100`).then((r) => r.json()).then((r) => ({ ...r, ...x })).catch((err) => console.error(err))));
 };
 
 const getCommissionData = async (data, event) => {
@@ -36,7 +36,8 @@ const getCommissionData = async (data, event) => {
     window.URL.revokeObjectURL(a.href);
     a.remove();
   } catch (err) {
-    console.error(err);
+    // eslint-disable-next-line
+    console.log(err)
   }
 
   event.target.textContent = originalText;

@@ -1,4 +1,4 @@
-import realData from '../commissions-test.json';
+import realData from '../commissions.json';
 import ConnCommsRcti from '../../src/types/ConnCommsRcti';
 //import * as realData from '../commissions.json';
 import commissionReport from '../../src/core/commissionReport'

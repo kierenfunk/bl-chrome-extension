@@ -12,8 +12,28 @@ const commissionReport = (data: ConnCommsRcti[], lastPeriod: boolean = false) : 
   const accountNames: string[] = Array.from(new Set(data.map((period) => period.accountName)));
   // get latest date
   const globalData: GlobalData = {
-    latestDate: Array.from(accountNames).reduce((obj, accountName) => ({ ...obj, [accountName]: Math.max(...data.filter((item) => item.accountName === accountName).map((item) => item.endDate)) }), {}),
-    periods: Array.from(accountNames).reduce((obj, accountName) => ({ ...obj, [accountName]: Array.from(new Set(data.filter((item) => item.accountName === accountName).map((item) => item.endDate))).sort() }), {}),
+    latestDate: Array.from(accountNames).reduce(
+      (obj, accountName) => (
+        {
+          ...obj,
+          [accountName]: Math.max(...data.filter(
+            (item) => item.accountName === accountName,
+          ).map(
+            (item) => item.endDate,
+          )),
+        }), {},
+    ),
+    periods: Array.from(accountNames).reduce(
+      (obj, accountName) => (
+        {
+          ...obj,
+          [accountName]: Array.from(new Set(data.filter(
+            (item) => item.accountName === accountName,
+          ).map(
+            (item) => item.endDate,
+          ))).sort(),
+        }), {},
+    ),
     lastPeriod,
   };
 
@@ -22,7 +42,9 @@ const commissionReport = (data: ConnCommsRcti[], lastPeriod: boolean = false) : 
   const dataMap = dictify(flatten(data), hierarchy, globalData);
 
   // merge accountNames together
-  const y: DictifiedComms = Object.values(dataMap).reduce((result, values) => merge(result, values), {});
+  const y: DictifiedComms = Object.values(dataMap).reduce(
+    (result, values) => merge(result, values), {},
+  );
 
   // get header names
   const headerKeys = ['accountNumber', 'loanName', 'dateSettled', 'loanAmount', 'loanBalance', 'commissionType', 'commission', 'commissionPercent', 'totalPaid', 'gst', 'total', 'lender', 'startDate', 'endDate'];
