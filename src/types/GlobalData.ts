@@ -1,13 +1,13 @@
 type LatestDate = {
-    [key: string]: number;
-}
+  [key: string]: number;
+};
 type Periods = {
-    [key: string]: number[];
-}
+  [key: string]: number[];
+};
 type GlobalData = {
-    latestDate: LatestDate,
-    periods: Periods,
-    lastPeriod: boolean
-}
+  latestDate: LatestDate,
+  periods: Periods,
+  lastPeriod: boolean
+};
 
-export default GlobalData
+export default GlobalData;

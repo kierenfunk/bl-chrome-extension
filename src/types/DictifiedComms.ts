@@ -1,7 +1,7 @@
-import { CommissionItemWrap } from './CommissionItem'
+import { CommissionItemWrap } from './CommissionItem';
 
 type DictifiedComms = {
-    [key: string] : DictifiedComms | CommissionItemWrap
-}
+  [key: string] : DictifiedComms | CommissionItemWrap
+};
 
-export default DictifiedComms
+export default DictifiedComms;
