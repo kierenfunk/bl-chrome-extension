@@ -3,6 +3,7 @@
   "description": "Create Broker Labz reports straight from the browser",
   "version": "1.0",
   "manifest_version": 3,
+  "options_page": "options.html",
   "action": {
     "default_icon": {
       "16": "/images/icon16.png",
@@ -21,11 +22,19 @@
     "js": ["/js/contentScript.js"],
     "matches": [ "*://commissions.connective.com.au/*" ],
     "run_at": "document_idle"
+  },
+  {
+    "js": ["/js/crmContentScript.js"],
+    "matches": [ "*://crm.connective.com.au/*" ],
+    "run_at": "document_idle"
   }],
   "web_accessible_resources": [
     {
       "resources": [ "/js/inject.js" ],
-      "matches": [ "*://commissions.connective.com.au/*" ]
+      "matches": [ "*://commissions.connective.com.au/*", "*://crm.connective.com.au/*" ]
     }
+  ],
+  "permissions": [
+    "storage"
   ]
 }

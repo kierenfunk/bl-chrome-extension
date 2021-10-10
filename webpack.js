@@ -6,7 +6,9 @@ module.exports = {
     mode: 'production',
     entry: {
       contentScript: path.join(srcDir, 'contentScript.js'),
+      crmContentScript: path.join(srcDir, 'crmContentScript.ts'),
       inject: path.join(srcDir, 'inject.ts'),
+      options: path.join(srcDir, 'options.js'),
     },
     output: {
         path: path.join(__dirname, "/dist/js"),
