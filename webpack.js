@@ -7,7 +7,9 @@ module.exports = {
     entry: {
       popup: path.join(srcDir, "views/popup.tsx"),
       contentScript: path.join(srcDir, 'contentScript.js'),
+      crmContentScript: path.join(srcDir, 'crmContentScript.ts'),
       inject: path.join(srcDir, 'inject.ts'),
+      options: path.join(srcDir, 'options.js'),
     },
     output: {
         path: path.join(__dirname, "/dist/js"),
