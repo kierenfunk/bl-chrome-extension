@@ -16,7 +16,7 @@
           },
         }));
       }
-      else if (this.url.includes('https://m5.connective.com.au/api/mercury5/session/login')) {
+      /*else if (this.url.includes('https://m5.connective.com.au/api/mercury5/session/login')) {
         console.log('hello?')
         window.dispatchEvent(new CustomEvent('BrokerLabzMessage', {
           detail: {
@@ -24,7 +24,7 @@
             partnerId: JSON.parse(this.response).partnerId,
           },
         }));
-      }
+      }*/
     });
     return send.apply(this, arguments);
   };

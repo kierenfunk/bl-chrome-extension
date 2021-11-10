@@ -6,6 +6,7 @@ module.exports = {
     mode: 'production',
     entry: {
       popup: path.join(srcDir, "views/popup.tsx"),
+      sidebar: path.join(srcDir, "views/sidebar.tsx"),
       contentScript: path.join(srcDir, 'contentScript.js'),
       crmContentScript: path.join(srcDir, 'crmContentScript.ts'),
       inject: path.join(srcDir, 'inject.ts'),
@@ -21,6 +22,11 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: "ts-loader",
                 exclude: /node_modules/,
+            },
+            {
+                test: /\.css$/i,
+                include: path.resolve(__dirname, 'src'),
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
         ],
     },
