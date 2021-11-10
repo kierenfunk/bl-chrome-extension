@@ -5,6 +5,7 @@ const srcDir = path.join(__dirname, "src");
 module.exports = {
     mode: 'production',
     entry: {
+      popup: path.join(srcDir, "views/popup.tsx"),
       contentScript: path.join(srcDir, 'contentScript.js'),
       inject: path.join(srcDir, 'inject.ts'),
     },
