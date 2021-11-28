@@ -1,6 +1,7 @@
-import CommissionItem, { CommissionItemWrap } from '../types/CommissionItem';
-import DictifiedComms from '../types/DictifiedComms';
-import convertValue from './convertValue';
+import zip from 'lodash.zip';
+import merge from 'lodash.merge';
+import buildTable from './buildTable';
+import hierarchise from './hierarchise';
 
 const templateTop = `
 <html>
@@ -69,16 +70,6 @@ const templateBottom = `
 </html>
 `;
 
-const buildTable = (header: [string, string][], data: any) => {
-  // add errors
-  let result = data.errors.map((e:string) => `<p class="error-message">${e}</p>`).join('');
-  result += '<table>\n<tbody>\n';
-  result += `\t<tr>\n${header.map(([, name]) => `\t\t<th>${name}</th>`).join('\n')}\n\t</tr>\n`;
-  result += data.data.map((row: any) => `\t<tr>\n${header.map(([key]) => `\t\t<td>${convertValue(row[key], key)}</td>`).join('\n')}\n\t</tr>\n`).join('');
-  result += '</tbody>\n</table>\n';
-  return result;
-};
-
 const builder = (header: [string, string][], data: any, height = 0) => {
   const helpText = ['', 'Account: ', 'Loan Amount: $'];
   if (height >= 3) {
@@ -98,45 +89,47 @@ const builder = (header: [string, string][], data: any, height = 0) => {
   return { output, hasError };
 };
 
-const getCommissionItemValues = (
-  data: CommissionItemWrap,
-  key: string,
-) : string[] | boolean | CommissionItem[] => {
-  if (key === 'errors') return data.errors;
-  if (key === 'discontinued') return data.discontinued;
-  return data.data;
-};
-
-const descend = (dataMap: any, retrieveKey: string, height: number = 2): any => {
-  if (height < 1) return [getCommissionItemValues(dataMap, retrieveKey)];
-  return Object.values(dataMap).reduce(
-    (arr: any, value) => [...arr, ...descend(value, retrieveKey, height - 1)],
-    [],
+const buildReport = (flatData: any) : any => {
+  const hierarchy: string[] = ['accountName', 'loanName', 'accountNumber', 'loanAmount'];
+  const data: any = Object.values(hierarchise(flatData, hierarchy, false)).reduce(
+    (result, values) => merge(result, values), {},
   );
-};
+  // get header names
+  const headerKeys = ['accountNumber', 'loanName', 'dateSettled', 'loanAmount', 'loanBalance', 'commissionType', 'commission', 'commissionPercent', 'totalPaid', 'gst', 'total', 'lender', 'startDate', 'endDate'];
+  const headerNames = ['Account', 'Name', 'Settled', 'Loan Amount', 'Balance', 'Type', 'Net Amount', '% Split', 'Paid', 'GST', 'Total', 'Lender', 'Period Start', 'Period End'];
+  const header = zip(headerKeys, headerNames);
 
-const split = (
-  dataMap: DictifiedComms,
-  retrieve: string,
-  reducer: Function,
-  reducerInit: boolean = true,
-): [DictifiedComms, DictifiedComms] => [
-  Object.entries(dataMap).reduce((res, [key, entry]) => {
-    if (!descend(entry, retrieve).reduce(reducer, reducerInit)) return { ...res, [key]: entry };
-    return res;
-  }, {}),
-  Object.entries(dataMap).reduce((res, [key, entry]) => {
-    if (descend(entry, retrieve).reduce(reducer, reducerInit)) return { ...res, [key]: entry };
-    return res;
-  }, {}),
-];
-
-const buildReport = (header: [string, string][], data: DictifiedComms) => {
-  // seperate errors from continued
-  const [nonErrors, errors] = split(data, 'errors', (a: boolean, b: string[]) => (a || (b.length > 0)), false);
+  // seperate errors from nonErrors
+  const errors : any = {};
+  const nonErrors : any = {};
+  Object.entries(data).forEach(([key, a]) => {
+    let hasErrors = false;
+    Object.entries(a).forEach(([,b]) => {
+      Object.entries(b).forEach(([,c]: any) => {
+        if (c.errors.length > 0) {
+          hasErrors = true;
+        }
+      });
+    });
+    if (hasErrors) errors[key] = a;
+    else nonErrors[key] = a;
+  });
 
   // split discontinued from continued
-  const [continued, discontinued] = split(nonErrors, 'discontinued', (a: boolean, b: boolean) => (a && b));
+  const continued : any = {};
+  const discontinued : any = {};
+  Object.entries(nonErrors).forEach(([key, a]) => {
+    let hasDiscontinued = true;
+    Object.entries(a).forEach(([,b]) => {
+      Object.entries(b).forEach(([,c]: any) => {
+        if (!c.discontinued) {
+          hasDiscontinued = false;
+        }
+      });
+    });
+    if (hasDiscontinued) discontinued[key] = a;
+    else continued[key] = a;
+  });
 
   let output = templateTop;
   output += '<h2>Errors:</h2>';

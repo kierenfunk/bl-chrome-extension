@@ -5,12 +5,11 @@ const srcDir = path.join(__dirname, "src");
 module.exports = {
     mode: 'production',
     entry: {
-      popup: path.join(srcDir, "views/popup.tsx"),
+      background: path.join(srcDir, "background.ts"),
+      // popup: path.join(srcDir, "views/popup.tsx"),
       sidebar: path.join(srcDir, "views/sidebar.tsx"),
-      contentScript: path.join(srcDir, 'contentScript.js'),
-      crmContentScript: path.join(srcDir, 'crmContentScript.ts'),
       inject: path.join(srcDir, 'inject.ts'),
-      options: path.join(srcDir, 'options.js'),
+      //options: path.join(srcDir, 'options.js'),
     },
     output: {
         path: path.join(__dirname, "/dist/js"),

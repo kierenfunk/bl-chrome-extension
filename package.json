@@ -53,6 +53,7 @@
   "dependencies": {
     "firebase": "^9.4.0",
     "firebaseui": "^6.0.0",
+    "formik": "^2.2.9",
     "lodash.merge": "^4.6.2",
     "lodash.zip": "^4.2.0",
     "react": "^17.0.2",

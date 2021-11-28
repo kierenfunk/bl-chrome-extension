@@ -1,12 +1,10 @@
 import CommissionItem from '../types/CommissionItem';
-import GlobalData from '../types/GlobalData';
+import CommissionError from '../types/CommissionError';
 
-const findErrors = (data: CommissionItem[], globalData: GlobalData): string[] => {
+const findErrors = (data: CommissionItem[], periods: number []): CommissionError[] => {
   if (data.length < 1) return [];
 
-  const { accountName } = data[0];
-  const latestDate = globalData.latestDate[accountName];
-  const periods = globalData.periods[accountName];
+  const latestDate = periods[periods.length - 1];
 
   const trails = data.filter((row) => row.commissionType === 'TC');
   const discharged = data.filter((row) => row.commissionType === 'DIS');
@@ -14,13 +12,7 @@ const findErrors = (data: CommissionItem[], globalData: GlobalData): string[] =>
   const amounts = trails.map((row) => row.loanAmount);
   const amountSum = amounts.reduce((total, current) => total + current, 0);
 
-  if (globalData.lastPeriod && dates.length > 0) {
-    if (!periods.slice(periods.length - 2).includes(Math.max(...dates))) {
-      return [];
-    }
-  }
-
-  const errors: string[] = [];
+  const errors: CommissionError[] = [];
   // check if trail commission has dropped off unexpectedly
   if (
     dates.length > 0
@@ -35,7 +27,11 @@ const findErrors = (data: CommissionItem[], globalData: GlobalData): string[] =>
             3. Loan must not be discharged
             4. Loan must have amount greater than 0
         */
-    errors.push('Potential trail drop off without discharge');
+    errors.push({
+      period: Math.max(...dates),
+      message: 'Potential trail drop off without discharge',
+      type: null,
+    });
   }
   // check if there is unusual trail commission behaviour (payouts outside of expected variance)
   // get variance

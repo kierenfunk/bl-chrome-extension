@@ -1,4 +1,4 @@
-interface ConnCommsRctiline {
+interface ConnectiveCommissionsRctiline {
   uniqueId: string,
   deletedByDisplay: any,
   parentType: any,
@@ -24,11 +24,11 @@ interface ConnCommsRctiline {
   associateName: string
 }
 
-interface ConnCommsRcti {
+interface ConnectiveCommissionsRcti {
   totalCount: number,
   count: number,
   offset: number,
-  results: ConnCommsRctiline[],
+  results: ConnectiveCommissionsRctiline[],
   uniqueId: string,
   company: string,
   isDeleted: any,
@@ -74,4 +74,4 @@ interface ConnCommsRcti {
   totalCAFVB: any
 }
 
-export default ConnCommsRcti;
+export default ConnectiveCommissionsRcti;

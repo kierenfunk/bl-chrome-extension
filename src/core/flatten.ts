@@ -1,8 +1,8 @@
-import ConnCommsRcti from '../types/ConnCommsRcti';
+import ConnectiveCommissionsRcti from '../types/ConnectiveCommissionsRcti';
 import CommissionItem from '../types/CommissionItem';
 
-const flatten = (data: ConnCommsRcti[]): CommissionItem[] => data.reduce(
-  (result: CommissionItem[], rcti: ConnCommsRcti) => [...result, ...rcti.results.map(
+const flatten = (data: ConnectiveCommissionsRcti[]): CommissionItem[] => data.reduce(
+  (result: CommissionItem[], rcti: ConnectiveCommissionsRcti) => [...result, ...rcti.results.map(
     (rctiline) => ({
       accountName: rcti.accountName,
       startDate: rcti.startDate,

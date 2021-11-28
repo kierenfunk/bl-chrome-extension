@@ -1,11 +1,9 @@
 import CommissionItem from '../types/CommissionItem';
-import GlobalData from '../types/GlobalData';
 
-const isDiscontinued = (data: CommissionItem[], globalData: GlobalData): boolean => {
+const isDiscontinued = (data: CommissionItem[], periods: number[]): boolean => {
   if (data.length < 1) return false;
 
-  const { accountName } = data[0];
-  const latestDate = globalData.latestDate[accountName];
+  const latestDate = periods[periods.length - 1];
 
   const dates = data.filter((row) => row.commissionType === 'TC').map((row) => row.endDate);
   const numberOfDateEntries = Array.from(new Set(dates)).length;
