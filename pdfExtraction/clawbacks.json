@@ -1,0 +1,174 @@
+{
+    "Bluebay": [{
+        "condition": "repaid",
+        "percentage": "100",
+        "timeStart": 0,
+        "timeEnd": "12 months"
+    }],
+    "Bluestone": [{
+        "condition": "repaid",
+        "percentage": "100",
+        "timeStart": 0,
+        "timeEnd": "6 months"
+    },
+    {
+        "condition": "repaid",
+        "percentage": "50",
+        "timeStart": "7 months",
+        "timeEnd": "12 months"
+    }],
+    "Citi": [{
+        "condition": "repaid",
+        "percentage": "100",
+        "timeStart": 0,
+        "timeEnd": "12 months"
+    },
+    {
+        "condition": "repaid",
+        "percentage": "50",
+        "timeStart": "12 months",
+        "timeEnd": "18 months"
+    }],
+    "Connective Essentials": [{
+        "settledBefore": "Sunday 11th November 2018",
+        "settledAfter": "",
+        "condition": "repaid",
+        "percentage": "50",
+        "timeStart": 0,
+        "timeEnd": "18 months"
+    },
+    {
+        "settledBefore": "",
+        "settledAfter": "Monday 12th November 2018",
+        "condition": "repaid",
+        "percentage": "100",
+        "timeStart": "0",
+        "timeEnd": "12 months"
+    },
+    {
+        "settledBefore": "",
+        "settledAfter": "Monday 12th November 2018",
+        "condition": "repaid",
+        "percentage": "50",
+        "timeStart": "13 months",
+        "timeEnd": "24 months"
+    },
+    {
+        "settledBefore": "",
+        "settledAfter": "Monday 12th November 2018",
+        "condition": "repaid",
+        "percentage": "0",
+        "timeStart": "24 months",
+        "timeEnd": ""
+    }],
+    "Connective Select": [{
+        "settledBefore": "1st August 2020",
+        "settledAfter": "",
+        "condition": "repaid",
+        "percentage": "100",
+        "timeStart": "0",
+        "timeEnd": "12 months"
+    },
+    {
+        "settledBefore": "",
+        "settledAfter": "1st August 2020",
+        "condition": "repaid",
+        "percentage": "100",
+        "timeStart": "0",
+        "timeEnd": "12 months"
+    }]
+
+    smart options:
+    from 1 December 2018:
+        0 - 365 "100%"
+        366 to 548 "50%"
+    from 1st April 2018
+        0 - 365 "100%"
+        366 to 548 "50%"
+    before 31st march 2018
+        0 to 365 100%
+        366 to 548 70%
+        549 to 730 50%
+        731 to 1095 25%
+    connective solutions:
+        For Prime Home Loan Product Suite:
+        0 to 12 months 100% 
+        13 – 18 50% 
+        For the Specialist Loan Product Suite:
+        0 to 6 months 100%
+        7-12 months 50%
+    eMoney:
+        see commission guide
+    firstmac:
+        0 - 12 months 100%
+        12 - 18 months 50%
+}   
+    gateway bank:
+        0 - 91 100%
+        91 - 730 50%
+    heritage bank:
+        0 - 12 100%
+        12 - 18 50%
+        18 - inf 0%
+    homestart:
+        0 - 12 100%
+        12 - 24 50%
+    ing:
+        0 - 12 months 100%
+        12 - 18 months 50%
+        Arrears:
+            60 days or more
+            0 - 6 months 100%
+    Keystart:
+        after 1st January 2019:
+            0 - 12 100%
+            Arrears:
+                for 3 months
+                0 - 12 months
+        before 31st December 2018 inclusive:
+            0 - 12 mmonths 100%
+            13 - 24 months 50%
+    Macquarie:
+        For loans that settle on or after 1 December 2018:
+            0 to 365 days 100%
+            366 to 548 days 50%
+        For loans that settled on or after the 16th October 2017:
+            0 to 365 days 100%
+            366 to 548 days 50%
+        For loans that settled before 16th October 2017:
+            0 to 183 days 100%
+            184 to 365 days 75%
+            366 to 548 days 50%
+            549 to 730 days 25%
+    Me bank:
+        0 - 12 months 100%
+        13 - 18 months 50%
+    Medfin:
+        0 - 12 100%
+        12 - 24 50%
+    Mystate:
+        after 1 June 2017:
+            0-12 months 100%
+            12-18 months 50%
+        before 31 May 2017:
+            0 – 6 months 100%
+            7 – 12 months 50%
+            13 - 18 months 25%
+    Nab:
+        0-12 100%
+        13-24 50%
+    Newcastle Permanent:
+        0 - 365 100%
+        365 - 548 50%
+    Pepper Money:
+        check commission guide
+    P&n bank:
+        before 1st July 2020.
+            0-12 100%
+        after 1st July 2020
+            0 - 12 100%
+            12 - 24 50%
+    resimac:
+
+    
+    

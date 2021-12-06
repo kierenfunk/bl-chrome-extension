@@ -1,0 +1,7 @@
+1. turn pdf pages into images, identify the seperate boxes that indicate different lenders.
+2. Keep lender logo with information
+3. Can identify the lender from the logo using an image match?
+4. use 'pdftohtml' on linux to extract text from each lender information.
+5. Might even be easier to just use some alternative OCR software.
+6. Have to maintain structure of the page.
+7. Use rule

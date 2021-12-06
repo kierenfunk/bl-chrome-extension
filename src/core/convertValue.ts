@@ -1,11 +1,12 @@
 const convertValue = (value: number, key: string): string => {
+
   if (['dateSettled', 'startDate', 'endDate'].includes(key)) {
     const d: Date = new Date(0);
-    d.setUTCSeconds(value / 1000);
-    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    d.setUTCMilliseconds(value)
+    return value? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : '';
   }
-  if (['loanAmount', 'loanBalance', 'commission', 'totalPaid', 'gst', 'total'].includes(key)) {
-    return `$${value.toFixed(2)}`;
+  if (['loanAmount', 'loanBalance', 'commissionAmount', 'totalPaid', 'gstAmount', 'totalAmount'].includes(key)) {
+    return `$${Number(value.toFixed(2)).toLocaleString()}`;
   }
   return value.toString();
 };

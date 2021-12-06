@@ -1,0 +1,252 @@
+<lender>
+    <lenderName>86400</lenderName>
+    <clawback>
+    On all 86 400 loan products (including construction loans and all credit increases of an 86 400 loan Clawback will be payable as follows:
+    The loan (including any increase to the financed amount) is repaid in full within 12 months of the settlement date, then 100% of the Upfront commission is to
+    be repaid by the broker to 86 400.
+    The loan (including any increase to the financed amount) is repaid at any time between 1 to 2 years of the settlement date, then 50% of the Upfront
+    commission is to be repaid by the broker to 86 400.
+    There is an increase to the Amount Financed, and the loan including any increase to the Amount Financed is repaid in full after 24 months of thei settlement
+    date, but within 12 months of the Subsequent Settlement date, 100% of the Commission for the increase to the Amount Financed is to be repaid by the
+    broker to 86 400.
+    There is an increase to the Amount Financed, and the loan including any increase to the Amount Financed is repaid in full after 24 months of the settlement
+    date, but at any time between 1 to 2 years of the Subsequent Settlement date, 50% of the Commission for the increase to the Amount Financed is to be
+    repaid by the broker to 86 400.
+    Where a loan application is submitted to 86 400, if that Loan is misleading, fraudulent or otherwise in breach of the law then 100% of the Upfront and Trail
+    Commission is to be repaid by the broker to 86 400.
+    At the time the loan application was submitted to 86 400 if the broker did not hold an accreditation with 86 400 then 100% of the Upfront and Trail
+    Commission is to be repaid by the broker to 86 400.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Adelaide Bank</lenderName>
+    <clawback>
+    In the event that the account is repaid in full Adelaide Bank will:
+    Clawback 100% of the upfront if the loan is paid out in the first 12 months.
+    Clawback 50% of the upfront if the loan is paid out over 12 months but within 18 months.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Adelaide Bank</lenderName>
+    <clawback>
+    In the event that the account is repaid in full Adelaide Bank will:
+    Clawback 100% of the upfront if the loan is paid out in the first 12 months.
+    Clawback 50% of the upfront if the loan is paid out over 12 months but within 18 months.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Australia First Mortgage</lenderName>
+    <clawback></clawback>
+</lender>
+<lender>
+    <lenderName>Australian Life Insurance</lenderName>
+    <clawback></clawback>
+</lender>
+<lender>
+    <lenderName>Allianz</lenderName>
+    <clawback></clawback>
+</lender>
+<lender>
+    <lenderName>Australian Military Bank</lenderName>
+    <clawback>
+   If a loan is repaid in full within 24 months of settlement of the loan for any reason other than the borrower switching to another Australian Military Bank loan product
+   broker must repay an amount equal:
+   100% of the upfront commission in respect of the loan if the loan is repaid within 12 months.
+   50% of the upfront commission in respect of the loan if the loan is repaid in months 13-24.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>AMP</lenderName>
+    <clawback>
+    Where there is a reduction event upfront commission is reduced as follows:
+    For loans that settle from 1st July 2020:
+    If a Facility is discharged, AMP Bank may clawback the initial commission paid in relation to the facility as follows:
+    0 to 366 calendar days – 100% of the initial commission will be repaid to AMP Bank by the broker
+    366 to 548 calendar days – 50% of the initial commission will be repaid to the AMP Bank by the broker.
+    549 days or more – 0% of the initial commission will be repaid to the AMP Bank by the broker.
+    Where a facility with a successful application before 1 January 2019 or on or after 1 January 2019 and more than 180 days after a successful application is
+    partially discharged – more than 180 days but less than 366 days after a successful application, the upfront commission is reduced by 100% and more than
+    365 days but less than 549 days after a successful application – the upfront is reduced by 50% and more than 549 days the upfront commission is not
+    reduced.
+    For Subsequent Commission calculation, AMP will review the net balance position at 180 days after settlement period to assess if clawback is applicable.
+    Post 180 days after settlement, the net balance position will be reviewed if a facility limit variation occurs. Net balance will be assessed to determine if
+    clawback is applicable.
+    If a facility Is not discharged, AMP Bank will not clawback initial commission paid to the broker in relation to the facility.
+    For loans settled before 1st July 2020:
+    Where the Reduction Event occurs less than our equal to 365 days after the Successful Application of the Facility - the upfront commission is reduced by
+    100%
+    Where the Reduction Event occurs more than 365 days but less than 549 days after the Successful Application of the Facility - the upfront commission is
+    reduced by 50% and
+    The commission paid by AMP Bank in relation to settlement Where the Reduction Event occurs 549 days or more after the Successful Application of the
+    Facility - the upfront commission is not reduced.
+    Where a facility with a successful application before 1 January 2019 or on or after 1 January 2019 and more than 180 days after a successful application is
+    partially discharged – more than 180 days but less than 366 days after a successful application, the upfront commission is reduced by 100% and more than
+    365 days but less than 549 days after a successful application – the upfront is reduced by 50% and more than 549 days the upfront commission is not
+    reduced.
+    For Subsequent Commission calculation, AMP will review the net balance position at 180 days after settlement period to assess if clawback is applicable.
+    Post 180 days after settlement, the net balance position will be reviewed if a facility limit variation occurs. Net balance will be assessed to determine if
+    clawback is applicable. 
+    </clawback>
+</lender>
+<lender>
+    <lenderName>ANZ</lenderName>
+    <clawback>
+    Clawback is payable on all Residential Loans
+    Paid out Period Percentage of Upfront Clawback
+    0 to 12 months 100%
+    Above 12 to 15 months 50%
+    Above 15 to 18 months 25%
+    Where an offset account is linked to a loan product on a day which is after the 10th day of the month immediately following the month during which that loan
+    product was drawn down, and before two months after the 10th day of the month immediately following the month which that loan product was drawn down,
+    ANZ may recover a percentage of the upfront commission paid to the broker in respect of that loan product. The ANZ bank will determine the amount to be
+    recovered by recalculating the upfront commission to include the loan proceeds disbursed to the offset account as if they were disbursed at draw down of the
+    loan product.
+</clawback>
+</lender>
+<lender>
+    <lenderName>Aussie Bonds</lenderName>
+    <clawback></clawback>
+</lender>
+<lender>
+    <lenderName>Auswide Bank</lenderName>
+    <clawback>
+    The Initial Referral Fee (Upfront) for a particular loan must be refunded to the lender in full if the loan is repaid in full or otherwise returned to zero balance
+    within twelve (12) months from the date on which the loan became a settled loan and is paid within fourteen (14) working days after the end of the monthly
+    period during which a loan has become a settled loan.
+    Auswide Bank may offset against subsequent Initial Referral Fees or Commission Trails, in respect of other loans, the refund due.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Bank of China</lenderName>
+    <clawback>
+    Bank of China may clawback any commissions or fees paid as follows:
+    If any applicant fully redeems or repays a residential property loan within 12 months of the settlement date, broker must repay to Bank of China 100% of the
+    upfront commission received for the residential property loan.
+    If any applicant fully redeems or repays a residential property loan between the period of the first day of the 13th calendar month and the last day of the 24th
+    calendar month after the settlement date the broker must repay 50% of the upfront commission received for the residential property loan. 
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Bank of Queensland</lenderName>
+    <clawback>
+    Clawback is payable where:
+    The facility falls 30 days or more in arrears within the first 90 days of credit being provided under the facility, then 100% of the upfront commission will be
+    repaid by the broker.
+    Within 12 months of credit being provided under the facility, BOQ obtains judgement in any court of law within Australia against the customer in respect of
+    the amount owing under the facility, then 100% of the upfront commission will be repaid by the broker.
+    The customer is in default (whether financial or otherwise) under their facility within 3 months, and default is not remedied within 3 months of the event
+    default occurring, then 100% of the upfront commission will be repaid by the broker.
+    The facility is repaid within the first 12 months of credit being provided under the facility, then 100% of the upfront commission will be repaid by the broker.
+    The facility is not drawn down in full after 12 months of credit being made available under the facility, then 100% of the upfront commission will be repaid by
+    the broker.
+    The facility is repaid after 12 months but before 24 months of credit facility being provided under the facility, then 50% of the upfront commission will be
+    repaid by the broker.
+    At least 80% of the facility limit has not been drawn down between 6 months to 12 months of credit being made available, then 50% of the upfront
+    commission will be repaid by the broker.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Bankwest</lenderName>
+    <clawback>
+   If the bank pays the broker any commission in relation to any Financial Service and the loan or facility in respect of which that commission was paid is repaid in full within 18
+months of it having been drawn down, the broker must refund to the bank an amount equal to the commission paid to the broker less “X” where “X” is determined as follows:
+X = months account has run divided by 18 multiplied by commission paid
+• The bank may, at its discretion, pay to the broker a commission in respect of applications accepted by the bank for equity lines, based on the credit limit of an equity
+line even though no funds have been disbursed from the equity line or drawn down by the customer.
+• If after 12 months of the bank making an Equity line or other similar facility available for draw down by a customer, the customer has not drawn down on that Equity
+line or has drawn less than 75% of the credit limit of that Equity line, then the bank is entitled to seek from the broker, within 60 days of expiration of that 12-month
+period, a refund of the commission paid by the bank in respect of the application for that Equity line.
+• If an Equity line is refinanced before the expiration of the 12-month period and the customer does not draw down on that Equity line or has drawn less than 75% of the
+credit limit of that equity line following the refinancing, the broker must still refund the commission it has received from the bank during the 12-month period in respect
+of the application for that Equity line, notwithstanding that the Equity line has been refinanced
+• The refund shall be calculated as follows: R = C – (C x D/L) Where
+o R = refund of commission the bank may seek
+o C = commission paid in respect of the Equity line application
+o D = maximum amount drawn down on the Equity line at any time during the 12-month period commencing on the date on which the bank made the Equity
+line available for draw down by the customer; and
+o L = credit limit for the Equity line
+• For Loans that settled up to 31 December 2020 - Six Month Review: Where the loan amount disbursed is less than $3 million, Bankwest will review each eligible
+home loan approximately 6 months after the date that any part of the amount of credit or maximum amount of credit has been advanced (settlement date). If, as at the
+date which is 6 months after the settlement date the highest average monthly balance of the relevant eligible home loan less the average daily balance of any linked
+offset account over this 6-month period has changed by $100,000, the commission originally paid will be adjusted to an amount equal to 0.77% of the new highest
+average monthly balance of the home loan less new average balance of any linked offset account. Where the new highest average monthly balance less average
+daily balance of any linked offset account has decreased by $100,000 or more, then broker must refund an amount equal to the difference between the original
+commission and the adjusted commission calculated. Where the new highest average monthly balance less the average daily balance of any linked offset account
+has increased by $100,000 or more, Bankwest will pay the broker an amount equal to the difference between the original commission paid and the adjusted
+commission. 
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Better Choice</lenderName>
+    <clawback>
+    Product Suite First 12 Months 13 to 18 Months Greater Than 18
+    Months
+    Classic 100% 50% 0%
+    Gold 100% 50% 0%
+    Options 100% 50% 0%
+    Platinum 100% 50% 0%
+    Assist 100% 50% 0%
+    Reset 100% 50% 0%
+    Silver 100% 50% 0%
+    Alternate 100% 50% 0%
+    Note: Effective 1 August 2020, for Classic Loan Product Only any variation commission payment will form part of any commission clawback that becomes
+    payable should the loan close within the clawback period.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Better Mortgage Management</lenderName>
+    <clawback>See table in commission guide</clawback>
+</lender>
+<lender>
+    <lenderName>Bluebay</lenderName>
+    <clawback>100% of the upfront commission is clawed back if the loan is repaid within 12 months of the settlement</clawback>
+</lender>
+<lender>
+    <lenderName>Bluestone</lenderName>
+    <clawback>
+    Where any New Loan or Variation by Further Advance is fully repaid by borrower within 12 months of the settlement date, the broker will refund to Bluestone the
+    upfront commission paid on the New Loan or Variation (whichever is applicable) as follows:
+    Where any new loan or Variation by Further Advance is fully repaid within first 6 months from settlement date broker will be required to refund 100% of the
+    Upfront Commission
+    Where any new loan or Variation by Further Advance is fully repaid within months 7 to 12 from settlement date broker will be required to refund 50% of the
+    Upfront Commission
+    Bluestone may deduct any refund from any commissions due to the broker by Bluestone. To the extent not deducted, the refund will be payable within 10
+    business days of the end of the calendar month in which the New product or Variation by Further Advance is repaid.
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Citibank</lenderName>
+    <clawback>
+    If the approved loan is fully or partially discharged within 12 months of its settlement date, the broker must refund 100% of any upfront commission paid after
+    the approved loan settled on the amount discharged, plus any GST adjustment, broker may be eligible to receive in relation to that refund;
+    If an approved loan is fully or partially discharged after 12 months but within 18 months of its settlement date, the broker must refund 50% of any upfront
+    commission paid after the approved loan settled on the amount discharged, plus any GST adjustment, broker may be eligible to receive in relation to the
+    refund. 
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Connective Essentials</lenderName>
+    <clawback>
+    For new loans and variations approved and instructed up to and including Sunday 11th November 2018
+    If the loan is refinanced or repaid in full within 18 months after the date on which Advantedge makes the first advance on the loan, the broker must
+    immediately repay 50% of all upfront commission paid in relation to the loan.
+    For new loans and variations approved and instructed from Monday 12th November 2018
+    If the loan is refinanced or repaid in full up to and including the first 12 months after the date on which Advantedge makes the first advance on the loan, the
+    broker must immediately repay 100% of all upfront commission paid in relation to the loan.
+    If the loan is refinanced or repaid in full, from 13 months up to and including 24 months after the date on which Advantedge makes the first advance on the
+    loan, the broker must immediately repay 50% of all upfront commission paid in relation to the loan.
+    After 24 months: 0% 
+    </clawback>
+</lender>
+<lender>
+    <lenderName>Connective Select</lenderName>
+    <clawback>
+    For loans contracted before 1st August 2020, the following Clawback, Upfront and trail applies:
+    In the event that the account is repaid in full Adelaide Bank will:
+    Clawback 100% of the upfront if the loan is paid out in the first 12 months
+    For loans contracted on or after 1st August 2020, the following Clawback, Upfront and trail applies:
+    In the event that the account is repaid in full Adelaide Bank will:
+    Clawback 100% of the upfront if the loan is paid out in the first 12 months.
+    Any variation commission shall be included in the commissions which the bank is entitled to clawback if the loan is paid out in the first 12 months.
+    </clawback>
+</lender>

@@ -1,43 +1,49 @@
-import CommissionItem from '../types/CommissionItem';
 import CommissionError from '../types/CommissionError';
+import { StatementLine } from '../types/StatementLines';
 
-const findErrors = (data: CommissionItem[], periods: number []): CommissionError[] => {
-  if (data.length < 1) return [];
+const findErrors = (statementLines: StatementLine[], allDates: number[]): CommissionError[]  => {
 
-  const latestDate = periods[periods.length - 1];
+    const errors: CommissionError[] = [];
 
-  const trails = data.filter((row) => row.commissionType === 'TC');
-  const discharged = data.filter((row) => row.commissionType === 'DIS');
-  const dates = trails.map((row) => row.endDate);
-  const amounts = trails.map((row) => row.loanAmount);
-  const amountSum = amounts.reduce((total, current) => total + current, 0);
+    // get trails and arrear notices
+    const trails: StatementLine[] = statementLines.filter(({commissionType})=>['TC', 'ARR'].includes(commissionType))
+    // get a list of dates
+    const dates: number[] = Array.from(new Set(trails.map(({startDate})=>startDate))).sort()
+    // has there been a discharge?
+    const discharged: boolean = statementLines.filter(({commissionType})=>commissionType === 'DIS').length > 0
+    // does a UFC payout exist?
+    const UFCPayout: boolean = statementLines.filter(({commissionType, totalAmount })=>commissionType === 'UFC' && totalAmount < 0).length > 0
 
-  const errors: CommissionError[] = [];
-  // check if trail commission has dropped off unexpectedly
-  if (
-    dates.length > 0
-    && Math.max(...dates) !== latestDate
-    && discharged.length < 1
-    && amountSum > 0
-  ) {
-    /*
-        Conditions:
-            1. last trail entry is not the latest period
-            2. Must have at least one trail entry
-            3. Loan must not be discharged
-            4. Loan must have amount greater than 0
-        */
-    errors.push({
-      period: Math.max(...dates),
-      message: 'Potential trail drop off without discharge',
-      type: null,
-    });
-  }
-  // check if there is unusual trail commission behaviour (payouts outside of expected variance)
-  // get variance
-  // console.log(trails.map(row=>row.total))
+    // is there a potential trail drop off?
+    // if dates exist, if last trail commission payment is not zero, if not discharged and no UFC payout exists
+    if(dates.length > 0 && trails[trails.length-1].loanBalance > 0 && !discharged && !UFCPayout){
+        // calculate the difference between the last date for this statement and the last date for all dates
+        const diff = Math.floor((allDates[allDates.length-1]-dates[dates.length-1])/(1000*60*60*24))
+        // if longer than 32 days since the last payout, trigger an error
+        if(diff > 32){
+            errors.push({period: null, message: "Potential trail drop off without discharge", type: null, uniqueId: null})
+        }
+    }
 
-  return errors;
+    // are there any negative trail commissions?
+    const negativeAmounts: StatementLine[] = statementLines.filter(({totalAmount, commissionType})=>totalAmount < 0 && commissionType === 'TC')
+    negativeAmounts.forEach((statement: StatementLine)=>{
+        errors.push({period: statement.startDate, message: "Trail commission is negative", type: null, uniqueId: statement.uniqueId})
+    })
+
+    // are there any negative loan balances?
+    const negativeBalances: StatementLine[] = statementLines.filter(({loanBalance})=> loanBalance < 0)
+    negativeBalances.forEach((statement: StatementLine)=>{
+        errors.push({period: statement.startDate, message: "Loan balance is negative", type: null, uniqueId: statement.uniqueId})
+    })
+
+    // are there any statements in arrears?
+    const arrears: StatementLine[] = statementLines.filter(({commissionType})=>commissionType === 'ARR')
+    arrears.forEach((statement: StatementLine)=>{
+        errors.push({period: statement.startDate, message: "Client is in arrears", type: null, uniqueId: statement.uniqueId})
+    })
+
+    return errors
 };
 
 export default findErrors;

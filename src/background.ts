@@ -1,43 +1,57 @@
 // import firebase from 'firebase/compat/app';
 // import 'firebase/compat/auth';
 // import { getAuth, setPersistence, signInWithEmailAndPassword} from "firebase/auth";
-// import realData from '../tests/commissions.json';
+import testData from '../tests/test.json';
 
-const getData = async (token: string, partnerId: string) => {
-  const response = await fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rcti?search=true&currentPartnerId=${partnerId}&searchParams=%7B%22type%22%3A%22wholesale%22%7D`);
-  const responseJson = await response.json();
-  const accountNames: string[] = Array.from(
-    new Set(responseJson.results.map((period: any) => period.accountName)),
-  );
-  const pendingDates: any = Object.fromEntries(accountNames.map((name) => [name, {}]));
-  accountNames.forEach((name) => {
-    responseJson.results.forEach((period: any) => {
-      if (period.accountName === name) {
-        if (!(period.endDate in pendingDates[name])) {
-          pendingDates[name][period.endDate] = true;
-        }
-        pendingDates[name][period.endDate] = pendingDates[name][period.endDate] && (period.status === 'Final');
-      }
-    });
-  });
-  const initData = responseJson.results.filter((x: any) => pendingDates[x.accountName][x.endDate]);
-  return Promise.all(initData.map(async (x: any) => fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/rctiline?search=true&actionType=getByRcti&rctiId=${x.uniqueId}&page=1&start=0&limit=100`).then((r) => r.json()).then((r) => ({ ...r, ...x })).catch((err) => console.error(err))));
-};
+import LoanAccounts from "./types/LoanAccounts";
+import StatementLines from "./types/StatementLines";
+import CommissionStatement from "./types/CommissionStatement";
+import analyseCommission from "./core/analyseCommission";
+
+const getLoanAccounts = async (token: string, partnerId: string) => {
+  const response = await fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/loanaccount?search=true&currentPartnerId=${partnerId}&method=getLoanAccountsByPartnerId&associateId=all`);
+  const { results } : LoanAccounts = await response.json();
+  return results
+}
+
+const getStatementLine = async (token: string, statement: CommissionStatement): Promise<CommissionStatement> => {
+  const response = await fetch(`https://commissionsapi.connective.com.au/commissions/api/${token}/statementline?search=true&number=${statement.accountNumber}&lender=${statement.lender}&page=1&start=1&limit=100`)
+  const { results } : StatementLines = await response.json();
+  return {...statement, data: results}
+}
+
+const getStatementLines = async (token: string, statements: CommissionStatement[]) => {
+  return testData
+  /*return await Promise.all(
+    statements.map(statement=>getStatementLine(token, statement))
+  )*/
+}
+
+const getLenders = async () => {
+  //"https://m5api.connective.com.au/api/master/Services/ServiceProviderList5.jsp?serviceType=Residential%20Loans&partnerId=P202861&page=1&start=0&limit=25"
+}
 
 chrome.runtime.onMessage.addListener(
   (message, _sender, _sendResponse) => {
     switch (message.cmd) {
-      case 'getCommissionData':
-        chrome.storage.sync.get('provider').then(({ provider }) => {
-          getData(provider.token, provider.partnerId).then((r) => {
-            _sendResponse({ status: 'success', payload: r });
-            // _sendResponse({status: 'success', payload: realData})
-          }).catch((e) => {
-            _sendResponse({ status: 'error', payload: `failed to retrieve data: ${e}` });
-          });
+      case 'getLoanAccounts':
+        getLoanAccounts(message.payload.token, message.payload.partnerId
+        ).then((response)=>{
+          _sendResponse({ status: 'success', payload: response });
         }).catch((e) => {
           _sendResponse({ status: 'error', payload: `failed to retrieve data: ${e}` });
         });
+        break;
+      case 'getStatementLines':
+        getStatementLines(message.payload.creds.token, message.payload.statements
+        ).then((response)=>{
+          _sendResponse({ status: 'success', payload: response });
+        }).catch((e) => {
+          _sendResponse({ status: 'error', payload: `failed to retrieve data: ${e}` });
+        });
+        break;
+      case 'analyseCommission':
+        _sendResponse({ status: 'success', payload: analyseCommission(message.payload) });
         break;
       default:
         _sendResponse({ message: 'command not found' });

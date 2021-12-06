@@ -2,124 +2,69 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import '../style.css';
 import zip from 'lodash.zip';
-import commissionReport from '../core/commissionReport';
-import { CommissionItemWrap } from '../types/CommissionItem';
 import Close from '../icons/close';
 import convertValue from '../core/convertValue';
 import ChevronRight from '../icons/chevronRight';
 import ChevronLeft from '../icons/chevronLeft';
-import Download from '../icons/download';
-import buildReport from '../core/buildReport';
-import CommissionGroup from '../types/CommissionGroup';
+import buildReport from '../core/buildReportV2';
 import CommissionError from '../types/CommissionError';
+import { LoanAccount } from '../types/LoanAccounts';
+import CommissionStatement from '../types/CommissionStatement';
+import { StatementLine } from '../types/StatementLines';
+import DownloadButton from '../components/DownloadButton';
+import Modal from '../components/Modal';
+import Panel from '../components/Panel';
 
-const DownloadButton = ({ onClick, children }: any) => (
-    <button
-        className="text-gray-900 text-md font-bold bg-blue-400 hover:bg-blue-500 rounded flex p-2 drop-shadow-md justify-center items-center"
-        type="button"
-        onClick={onClick}
-    >
-        <div><Download/></div>
-        {' '}
-        <div>
-            {children}
-        </div>
-    </button>
-);
-
-const BuildTable = ({ data }: any) => {
-  if (!data) return null;
+const BuildTable = ({ tableData }: any) => {
+  if (!tableData) return null;
   // add errors
-  const headerKeys = ['accountNumber', 'loanName', 'dateSettled', 'loanAmount', 'loanBalance', 'commissionType', 'commission', 'commissionPercent', 'totalPaid', 'gst', 'total', 'lender', 'startDate', 'endDate'];
-  const headerNames = ['Account', 'Name', 'Settled', 'Loan Amount', 'Balance', 'Type', 'Net Amount', '% Split', 'Paid', 'GST', 'Total', 'Lender', 'Period Start', 'Period End'];
+  const headerKeys = ['accountNumber', 'name', 'dateSettled', 'loanAmount', 'loanBalance', 'commissionType', 'commissionAmount', 'gstAmount', 'totalAmount', 'lender', 'startDate', 'comments'];
+  const headerNames = ['Account', 'Name', 'Settled', 'Loan Amount', 'Balance', 'Type', 'Net Amount', 'GST', 'Total', 'Lender', 'Period Start', 'Comments'];
   const header = zip(headerKeys, headerNames);
+
+  const errorMessages: string[] = Array.from(new Set(tableData.errors.map((e: CommissionError)=>e.message)))
 
   return (
       <div className="p-2">
-        {data.errors.map((e: CommissionError) => (<p className="text-red-500">{e.message}</p>))}
+        {errorMessages.map((message: string) => (<p className="text-red-500">{message}</p>))}
         <table className="table-auto border-collapse border border-black text-black">
-            <tbody>
-                <tr>
-                    {header.map(([, name]) => <th className="border border-black p-1 font-bold">{name}</th>)}
-                </tr>
-                {data.data.map((row: any) => (
-                        <tr>
-                            {header.map(([key]) => <td className="border border-black p-1">{convertValue(row[key], key)}</td>)}
-                        </tr>
-                ))}
-            </tbody>
+          <tbody>
+              <tr>
+                  {header.map(([, name]) => <th className="border border-black p-1 font-bold">{name}</th>)}
+              </tr>
+              {tableData.data.map((row: any) => (
+                      <tr>
+                          {header.map(([key]) => <td className="border border-black p-1">{convertValue(row[key], key)}</td>)}
+                      </tr>
+              ))}
+          </tbody>
         </table>
       </div>
   );
 };
 
 const downloadCSVReport = ({ data }: any) => {
-  const headerKeys = ['accountNumber', 'loanName', 'dateSettled', 'loanAmount', 'loanBalance', 'commissionType', 'commission', 'commissionPercent', 'totalPaid', 'gst', 'total', 'lender', 'startDate', 'endDate'];
-  const headerNames = ['Account', 'Name', 'Settled', 'Loan Amount', 'Balance', 'Type', 'Net Amount', '% Split', 'Paid', 'GST', 'Total', 'Lender', 'Period Start', 'Period End'];
+
+  const headerKeys = ['accountNumber', 'name', 'dateSettled', 'loanAmount', 'loanBalance', 'commissionType', 'commissionAmount', 'gstAmount', 'totalAmount', 'lender', 'startDate', 'comments'];
+  const headerNames = ['Account', 'Name', 'Settled', 'Loan Amount', 'Balance', 'Type', 'Net Amount', 'GST', 'Total', 'Lender', 'Period Start', 'Comments'];
   const header = zip(headerKeys, headerNames);
 
   const csvContent = `data:text/csv;charset=utf-8,${
     headerNames.join(',')}\n${
     data.map((row: any) => (
-      header.map(([key]) => convertValue(row[key], key)).join(',')
+      header.map(([key]) => convertValue(row[key], key).replace(',','')).join(',')
     )).join('\n')}`;
-
   const date = new Date();
   const month = date.toLocaleString('default', { month: 'long' });
   const year = date.getFullYear();
 
   const link = document.createElement('a');
   link.setAttribute('href', encodeURI(csvContent));
-  link.setAttribute('download', `${month}-${year}-${date.getTime()}.csv`);
+  link.setAttribute('download', `BrokerLabz-${month}-${year}-${date.getTime()}.csv`);
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
   link.parentNode.removeChild(link);
-};
-
-const ErrorModal = ({
-  tableData, errorModalSetter, nextError, prevError,
-}: any) => {
-  if (!tableData) return null;
-  const downloader = () => {
-    try {
-      downloadCSVReport(tableData);
-    } catch (e) {
-      alert(e);
-    }
-  };
-
-  return (
-    <div className="fixed h-screen w-screen top-0 left-0 flex items-center justify-center" style={{ zIndex: 99999 }}>
-        <div className="fixed top-0 left-0 bg-black opacity-80 h-full w-full" style={{ zIndex: 0 }}></div>
-        <div className="text-black bg-gray-100 rounded" style={{ zIndex: 1 }}>
-            <div className="flex flex-col h-full w-full">
-                <div className="border-b border-gray-300 px-4 py-2 flex items-center">
-                    <div className="flex-1 text-lg font-bold">
-                        {`${tableData.data[0].loanName}, ${tableData.data[0].lender}, ${convertValue(tableData.data[0].loanAmount, 'loanAmount')}`}
-                    </div>
-                    <div className="flex">
-                        <div className="cursor-pointer" onClick={() => prevError()}>
-                            <ChevronLeft/>
-                        </div>
-                        <div className="cursor-pointer" onClick={() => nextError()}>
-                            <ChevronRight/>
-                        </div>
-                        <div className="cursor-pointer" onClick={() => errorModalSetter(-1)}>
-                            <Close/>
-                        </div>
-                    </div>
-                </div>
-                <div className="overflow-y-auto" style={{ maxHeight: '70vh' }}>
-                    <BuildTable data={tableData}/>
-                </div>
-                <div className="border-t border-gray-300 py-2 px-4 flex justify-end">
-                    <DownloadButton onClick={downloader}>Download CSV</DownloadButton>
-                </div>
-            </div>
-        </div>
-    </div>
-  );
 };
 
 const downloadReport = (report: string) => {
@@ -131,7 +76,7 @@ const downloadReport = (report: string) => {
   const link = document.createElement('a');
   link.href = url;
   link.style.display = 'none';
-  link.setAttribute('download', `Commission-Report-${month}-${year}-${date.getTime()}.html`);
+  link.setAttribute('download', `BrokerLabz-Commission-Report-${month}-${year}-${date.getTime()}.html`);
   // Append to html link element page
   document.body.appendChild(link);
   // Start download
@@ -140,88 +85,147 @@ const downloadReport = (report: string) => {
   link.parentNode.removeChild(link);
 };
 
-const ErrorPanel = ({
-  data, errors, errorModalSetter, setLastPeriod, lastPeriod,
-}: any) => {
-  if (!errors) {
-    return <div>loading...</div>;
-  }
+const CommissionModal = ({setCommsModalIndex, tableData}: any) => {
+  if (!tableData) return null;
+  return (
+    <Modal>
+      <div className="border-b border-gray-300 px-4 py-2 flex items-center">
+          <div className="flex-1 text-lg font-bold">
+              {`${tableData.loanName}, ${tableData.lender}, ${convertValue(tableData.loanAmount, 'loanAmount')}`}
+          </div>
+          <div className="flex">
+              {/*<div className="cursor-pointer" onClick={() => prevError()}>
+                  <ChevronLeft/>
+              </div>
+              <div className="cursor-pointer" onClick={() => nextError()}>
+                  <ChevronRight/>
+              </div>*/}
+              <div className="cursor-pointer" onClick={() => setCommsModalIndex(-1)}>
+                  <Close/>
+              </div>
+          </div>
+      </div>
+      <div className="overflow-y-auto" style={{ maxHeight: '70vh' }}>
+          <BuildTable {...{tableData}}/>
+      </div>
+      <div className="border-t border-gray-300 py-2 px-4 flex justify-end">
+          <DownloadButton onClick={()=>downloadCSVReport(tableData)}>Download CSV</DownloadButton>
+      </div>
+  </Modal>
+  )
+}
 
-  const downloader = () => {
-    try {
-      downloadReport(buildReport(data));
-    } catch (e) {
-      alert(e);
-    }
-  };
+const CommissionErrors = ({statements, setCommsModalIndex}: any) => {
+  if(!statements)
+    return <div className="text-white">Getting entire history of commission data...</div>
+  const noDataYet = statements.filter(({data}: CommissionStatement)=>data.length > 0).length < 1
+  if(noDataYet)
+    return <div className="text-white">Getting entire history of commission data...</div>
+  const errors = statements.filter(({errors}: CommissionStatement)=>errors.length > 0)
 
   return (
         <div className="relative">
-            {/* <div>
-                <button type="button" onClick={()=>setLastPeriod(false)}>All time</button>
-                <button type="button" onClick={()=>setLastPeriod(true)}>Last Period Only</button>
-            </div> */}
             <div className="p-1 bg-gray-800 rounded">
                 <p className="text-gray-100 text-lg">{errors.length} Warnings</p>
-                {errors.map((row: CommissionItemWrap, i: number) => (
-                    <div key={i} onClick={() => errorModalSetter(i)} className={`${i % 2 === 0 ? 'bg-gray-600' : 'bg-gray-700'} hover:bg-red-800 cursor-pointer p-1 text-xs`}>{row.data[0].loanName}, {row.data[0].lender}, {convertValue(row.data[0].loanAmount, 'loanAmount')}</div>
+                {errors.map((statement: CommissionStatement, i: number) => (
+                    <div 
+                      key={statement.index} 
+                      className={`${i % 2 === 0 ? 'bg-gray-600' : 'bg-gray-700'} hover:bg-red-800 cursor-pointer p-1 text-xs`}
+                      onClick={() => setCommsModalIndex(statement.index)}
+                    >
+                      {statement.loanName}, {statement.lender}, {convertValue(statement.loanAmount, 'loanAmount')}
+                    </div>
                 ))}
             </div>
-            <DownloadButton onClick={downloader}>Download Full Report</DownloadButton>
+            <DownloadButton onClick={()=>downloadReport(buildReport(statements))}>Download Full Report</DownloadButton>
         </div>
   );
 };
 
-const CommissionDisplay = ({
-  data, errors, errorModalSetter, lastPeriod, setLastPeriod,
-}: any) => (
-        <div className="text-white">
-            <p className="text-lg font-bold">Commissions</p>
-            <ErrorPanel {...{
-              lastPeriod, setLastPeriod, data, errors, errorModalSetter,
-            }}/>
-        </div>
-);
+type Creds = {
+  token: string,
+  partnerId: string
+}
+
+type State = {
+  creds: Creds, 
+  loanAccounts: CommissionStatement[],
+  open: boolean
+}
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const initState : State = {
+    creds: {
+      token: null, 
+      partnerId: null
+    },
+    loanAccounts: null,
+    open: true
+  }
+  const [open, setOpen] = useState(true);
+  const [commsModalIndex, setCommsModalIndex] = useState(-1);
   const sidebarWidth = 400;
-  const [providerData, setProviderData] = useState(null);
-  const [errors, setErrors] = useState(null);
-  const [lastPeriod, setLastPeriod] = useState(false);
-  const [errorModalIndex, setErrorModalIndex] = useState(-1);
+  const [state, setState] = useState(initState)
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ provider: 'connective', cmd: 'getCommissionData' }, (response) => {
-      const flat = commissionReport(response.payload);
-      const err = flat.filter((item: CommissionGroup) => item.errors.length > 0);
-      setErrors(err);
-      setProviderData(flat);
-    });
-  }, []);
+    // inject script into page
+    const script = document.createElement('script');
+    script.src = chrome.runtime.getURL('js/inject.js');
+    (document.head || document.documentElement).appendChild(script);
 
-  const nextError = () => {
-    if (errors) {
-      setErrorModalIndex((errorModalIndex + 1) % errors.length);
-    }
-  };
-  const prevError = () => {
-    if (errors) {
-      setErrorModalIndex((errors.length + errorModalIndex - 1) % errors.length);
-    }
-  };
+    // get credentials
+    window.addEventListener('BrokerLabzMessage', (data: CustomEvent) => {
+      setState({...state, creds:data.detail})
+      // get loanAccount data
+      chrome.runtime.sendMessage({ provider: 'connective', cmd: 'getLoanAccounts', payload: data.detail }, (response) => {
+        const statementLineData: StatementLine[] = []
+        const statementLineErrors: CommissionError[] = []
+        const statements: CommissionStatement[] = response.payload.map((loanAccount: LoanAccount)=>({
+          data: statementLineData,
+          errors: statementLineErrors,
+          discontinued: false,
+          loanName: loanAccount.lastName,
+          accountNumber: loanAccount.number,
+          loanAmount: loanAccount.loanAmount,
+          uniqueId: loanAccount.uniqueId,
+          lender: loanAccount.lender,
+        }))
+        setState({...state, creds:data.detail, loanAccounts: statements})
+        // get statementLines for each loan account
+        chrome.runtime.sendMessage({ provider: 'connective', cmd: 'getStatementLines', payload: {statements,creds:data.detail} }, (slResponse) => {
+          const indexedPayload = slResponse.payload.map((statement: CommissionStatement,index: number)=>({...statement, index: index}))
+          setState({...state, creds:data.detail, 
+            loanAccounts: indexedPayload
+          })
+          // run analysis on all commissionStatements
+          chrome.runtime.sendMessage({ provider: 'connective', cmd: 'analyseCommission', payload: indexedPayload }, (analysis) => {
+            setState({...state, creds:data.detail, loanAccounts: analysis.payload})
+          });
+        });
+      });
+    }, false);
+  }, [state]);
 
   return (
-        <div className="">
+        <div>
             <button className="bg-gray-900 fixed top-20 transition-all rounded drop-shadow-md" style={{ right: open ? sidebarWidth - 4 : -4, zIndex: 99997 }} onClick={() => setOpen(!open)}>
                 <p className="text-white">
                     {open ? <ChevronRight/> : <ChevronLeft/>}
                 </p>
             </button>
             <div className="overflow-y-auto fixed top-0 right-0 h-screen bg-gray-900 transition-all p-2" style={{ transform: open ? 'translateX(0px)' : `translateX(${sidebarWidth}px)`, width: sidebarWidth, zIndex: 99998 }}>
-                <CommissionDisplay data={providerData} errors={errors} errorModalSetter={setErrorModalIndex} lastPeriod={lastPeriod} setLastPeriod={setLastPeriod}/>
+            {(()=>{
+              if(!state.creds.token){
+                return <div className="text-white">Retrieving credentials...</div>
+              }
+              return (
+                <Panel header="Commissions">
+                  <CommissionErrors {...{statements:state.loanAccounts, setCommsModalIndex}} />
+                </Panel>
+                )
+            })()}
             </div>
-            <ErrorModal tableData={errorModalIndex > -1 ? errors[errorModalIndex] : null} errorModalSetter={setErrorModalIndex} nextError={nextError} prevError={prevError}/>
+            <CommissionModal {...{setCommsModalIndex, tableData: commsModalIndex > -1 ? state.loanAccounts[commsModalIndex] : null}}/>
         </div>
   );
 };
@@ -229,14 +233,5 @@ const Sidebar = () => {
 const div = document.createElement('div');
 div.id = 'sidebar';
 document.body.appendChild(div);
-
-// inject script into page
-const script = document.createElement('script');
-script.src = chrome.runtime.getURL('js/inject.js');
-(document.head || document.documentElement).appendChild(script);
-
-window.addEventListener('BrokerLabzMessage', (data: CustomEvent) => {
-  chrome.storage.sync.set({ provider: data.detail });
-}, false);
 
 ReactDOM.render(<Sidebar/>, document.getElementById('sidebar'));
